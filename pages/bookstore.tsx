@@ -1,5 +1,6 @@
+import { Layer } from "components/Layer";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import styles from "styles/Home.module.css";
 
 export default function Home() {
   return (
@@ -11,7 +12,8 @@ export default function Home() {
 
       <main className={styles.main}>
         <div>
-            <h1>Bookstore</h1>
+          <h1>Bookstore</h1>
+          <Layer />
         </div>
       </main>
 

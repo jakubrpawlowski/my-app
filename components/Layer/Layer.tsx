@@ -1,9 +1,12 @@
 import { PropsWithChildren } from "react";
 
-interface LayerProps {}
+export interface LayerProps {}
 
-const Layer = (props: PropsWithChildren<LayerProps>) => {
-  return <div>{props.children}</div>;
+export const Layer = (props: PropsWithChildren<LayerProps>) => {
+  return (
+    <div>
+      {props.children}
+      chuj
+    </div>
+  );
 };
-
-export default Layer;
