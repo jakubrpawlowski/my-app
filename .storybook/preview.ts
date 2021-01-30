@@ -7,11 +7,11 @@ export const parameters = {
     values: [
       {
         name: "light-theme",
-        value: uiPaletteCSS["light-theme"][1],
+        value: uiPaletteCSS.neumorphism.background,
       },
       {
         name: "dark-theme",
-        value: uiPaletteCSS["dark-theme"][1],
+        value: uiPaletteCSS.neumorphismDark.background,
       },
     ],
   },
