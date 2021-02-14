@@ -1,5 +1,15 @@
+import { Loading } from "components/Loading";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import { CSSProperties, useEffect, useRef } from "react";
+
+// https://github.com/microsoft/TypeScript/issues/30712#issuecomment-494865455
+const loader = () =>
+  import("components/apple/Dynamic").then((mod) => mod.Dynamic);
+const Dynamic = dynamic(loader, {
+  loading: () => <Loading />,
+  ssr: false,
+});
 
 export default function Apple() {
   const scrollableRef = useRef<HTMLDivElement>(null);
@@ -48,6 +58,7 @@ export default function Apple() {
         <main style={styles.main}>
           <div>
             <h1>Apple</h1>
+            <Dynamic />
           </div>
         </main>
       </div>
