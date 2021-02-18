@@ -25,22 +25,22 @@ declare global {
 
 export const Effects = () => {
   const { aspect, camera, gl, scene, size } = useThree();
-  const composer = useRef<EffectComposer>(null);
+  const composerRef = useRef<EffectComposer>(null);
 
   useEffect(() => {
-    if (composer.current) {
-      composer.current.setSize(size.width, size.height);
+    if (composerRef.current) {
+      composerRef.current.setSize(size.width, size.height);
     }
   }, [size]);
 
   useFrame(() => {
-    if (composer.current) {
-      composer.current.render();
+    if (composerRef.current) {
+      composerRef.current.render();
     }
   }, 1);
 
   return (
-    <effectComposer ref={composer} args={[gl]}>
+    <effectComposer ref={composerRef} args={[gl]}>
       <renderPass attachArray={"passes"} args={[scene, camera]} />
 
       <shaderPass
