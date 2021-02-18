@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { extend, ReactThreeFiber, useFrame, useThree } from "react-three-fiber";
 import { getDistortionShaderDefinition } from "resources/getDistortionShaderDefinition";
 import { MathUtils } from "three";
@@ -23,7 +23,7 @@ declare global {
   }
 }
 
-export const Effects = () => {
+export const Effects = memo(() => {
   const { aspect, camera, gl, scene, size } = useThree();
   const composerRef = useRef<EffectComposer>(null);
 
@@ -55,4 +55,4 @@ export const Effects = () => {
       />
     </effectComposer>
   );
-};
+});
