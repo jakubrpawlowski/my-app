@@ -17,7 +17,7 @@ export default function Apple() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (scrollableRef && scrollableRef.current) {
+      if (scrollableRef.current) {
         const clientHeight = scrollableRef.current.clientHeight;
         const scrollHeight = scrollableRef.current.scrollHeight;
         const scrollMax = scrollHeight - clientHeight;
@@ -31,7 +31,7 @@ export default function Apple() {
       }
     };
 
-    if (scrollableRef && scrollableRef.current) {
+    if (scrollableRef.current) {
       scrollableRef.current.scrollTop = 1;
 
       scrollableRef.current.addEventListener("scroll", handleScroll, {
@@ -40,7 +40,7 @@ export default function Apple() {
     }
 
     return () => {
-      if (scrollableRef && scrollableRef.current) {
+      if (scrollableRef.current) {
         scrollableRef.current.removeEventListener("scroll", handleScroll);
       }
     };
@@ -56,7 +56,10 @@ export default function Apple() {
 
       <div style={styles.content}>
         <main style={styles.main}>
-          <div>
+          {/* TODO fix those styles later */}
+          <div
+          style={{ height: 750 }}
+          >
             <h1>Apple</h1>
             <Dynamic />
           </div>

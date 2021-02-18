@@ -1,16 +1,12 @@
 import { memo, Suspense } from "react";
 import { useLoader } from "react-three-fiber";
 import { greyscalePalette } from "resources/colors";
-import { ConditionalEdgesGeometry } from "resources/ConditionalEdgesGeometry";
-import { ConditionalEdgesShader } from "resources/ConditionalEdgesShader";
-import {
-  EdgesGeometry,
-  LineBasicMaterial,
-  MeshBasicMaterial,
-  ShaderMaterial,
-} from "three";
-import { BufferGeometryUtils } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { ConditionalEdgesGeometry } from "resources/missing-lines/ConditionalEdgesGeometry";
+import { materialsSelector } from "stores/apple/selectors";
+import { useAppleStore } from "stores/apple/store";
+import { EdgesGeometry } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { BufferGeometryUtils } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 interface CityProps {}
 
@@ -18,18 +14,12 @@ const CityMesh = memo((props: CityProps) => {
   const { nodes } = useLoader(GLTFLoader, "/city.glb");
   const building = nodes.building as THREE.Mesh;
 
-  const material = new MeshBasicMaterial({
-    polygonOffset: true,
-    polygonOffsetFactor: 1,
-    polygonOffsetUnits: 1,
-    colorWrite: false,
-  });
+  const { conditionalMaterial, fillMaterial, lineMaterial } = useAppleStore(
+    materialsSelector,
+  );
 
   // Threshold edges
   const edgesGeometry = new EdgesGeometry(building.geometry, 40);
-  const lineMaterial = new LineBasicMaterial({
-    color: greyscalePalette.d[3],
-  });
 
   // Conditional edges
   const conditionalBuildingGeometry = building.geometry.clone();
@@ -39,14 +29,13 @@ const CityMesh = memo((props: CityProps) => {
     }
   }
   const conditionalEdgesGeometry = new ConditionalEdgesGeometry(
-    BufferGeometryUtils.mergeVertices(conditionalBuildingGeometry)
+    BufferGeometryUtils.mergeVertices(conditionalBuildingGeometry),
   );
-  const conditionalMaterial = new ShaderMaterial(ConditionalEdgesShader);
   conditionalMaterial.uniforms.diffuse.value.set(greyscalePalette.d[3]);
 
   return (
     <>
-      <mesh geometry={building.geometry} material={material} />
+      <mesh geometry={building.geometry} material={fillMaterial} />
       <lineSegments geometry={edgesGeometry} material={lineMaterial} />
       <lineSegments
         geometry={conditionalEdgesGeometry}
