@@ -12,5 +12,5 @@ export const Camera = memo(() => {
       setDefaultCamera(cameraRef.current);
     }
   }, []);
-  return <perspectiveCamera ref={cameraRef} position={[0, 0, 8]} />;
+  return <perspectiveCamera ref={cameraRef} position={[0, 3, 60]} />;
 });
