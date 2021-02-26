@@ -36,4 +36,4 @@ const createState: StateCreator<AppleState, CustomSetState> = (set) => ({
   },
 });
 
-export const useAppleStore = create(immer(createState));
+export const useDynamicStore = create(immer(createState));

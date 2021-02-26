@@ -2,8 +2,8 @@ import { memo, Suspense } from "react";
 import { useLoader } from "react-three-fiber";
 import { greyscalePalette } from "resources/colors";
 import { ConditionalEdgesGeometry } from "resources/missing-lines/ConditionalEdgesGeometry";
-import { materialsSelector } from "stores/apple/selectors";
-import { useAppleStore } from "stores/apple/store";
+import { materialsSelector } from "stores/apple-dynamic/selectors";
+import { useDynamicStore } from "stores/apple-dynamic/store";
 import { EdgesGeometry } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { BufferGeometryUtils } from "three/examples/jsm/utils/BufferGeometryUtils.js";
@@ -14,7 +14,7 @@ const CityMesh = memo((props: CityProps) => {
   const { nodes } = useLoader(GLTFLoader, "/city.glb");
   const building = nodes.building as THREE.Mesh;
 
-  const { conditionalMaterial, fillMaterial, lineMaterial } = useAppleStore(
+  const { conditionalMaterial, fillMaterial, lineMaterial } = useDynamicStore(
     materialsSelector,
   );
 

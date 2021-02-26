@@ -1,10 +1,13 @@
 import Head from "next/head";
 import { CSSProperties, PropsWithChildren, useEffect, useRef } from "react";
 
-interface ScrollViewProps {}
+interface ScrollViewProps {
+  setScrollTop: (value: number) => void;
+}
 
 export const ScrollView = (props: PropsWithChildren<ScrollViewProps>) => {
   const scrollableRef = useRef<HTMLDivElement>(null);
+  const { setScrollTop } = props;
 
   useEffect(() => {
     // https://stackoverflow.com/questions/49675898/programmatically-scroll-with-non-integral-scale-values
@@ -24,6 +27,8 @@ export const ScrollView = (props: PropsWithChildren<ScrollViewProps>) => {
         } else if (scrollTop < 2) {
           scrollableRef.current.scrollTop = scrollMax - 5;
         }
+
+        setScrollTop(scrollableRef.current.scrollTop);
       }
     };
 
@@ -40,7 +45,7 @@ export const ScrollView = (props: PropsWithChildren<ScrollViewProps>) => {
         scrollableRef.current.removeEventListener("scroll", handleScroll);
       }
     };
-  }, []);
+  }, [setScrollTop]);
 
   return (
     <div ref={scrollableRef} style={styles.scrollable}>

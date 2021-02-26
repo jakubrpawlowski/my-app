@@ -3,6 +3,8 @@ import { ScrollView } from "components/ScrollView";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { CSSProperties } from "react";
+import { setScrollTopSelector } from "stores/apple-container/selectors";
+import { useContainerStore } from "stores/apple-container/store";
 
 // https://github.com/microsoft/TypeScript/issues/30712#issuecomment-494865455
 const loader = () =>
@@ -13,8 +15,10 @@ const Dynamic = dynamic(loader, {
 });
 
 export default function Apple() {
+  const setScrollTop = useContainerStore(setScrollTopSelector);
+
   return (
-    <ScrollView>
+    <ScrollView setScrollTop={setScrollTop}>
       <Head>
         <title>Apple</title>
         <link rel="icon" href="/favicon.ico" />
