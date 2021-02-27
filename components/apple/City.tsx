@@ -33,13 +33,24 @@ const CityMesh = memo((props: CityProps) => {
   );
   conditionalMaterial.uniforms.diffuse.value.set(greyscalePalette.d[3]);
 
+  // https://threejs.org/docs/#api/en/materials/Material.colorWrite
+  // renderOrder is needed here to guarantee back edges occlusion
   return (
     <>
-      <mesh geometry={building.geometry} material={fillMaterial} />
-      <lineSegments geometry={edgesGeometry} material={lineMaterial} />
+      <mesh
+        geometry={building.geometry}
+        material={fillMaterial}
+        renderOrder={1}
+      />
+      <lineSegments
+        geometry={edgesGeometry}
+        material={lineMaterial}
+        renderOrder={2}
+      />
       <lineSegments
         geometry={conditionalEdgesGeometry}
         material={conditionalMaterial}
+        renderOrder={2}
       />
     </>
   );

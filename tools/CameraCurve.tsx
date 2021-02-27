@@ -7,7 +7,7 @@ export const CameraCurve = memo(() => {
   const { points } = curves[0];
   const curvePath = makeCurvePath(points);
   const geom = new BufferGeometry().setFromPoints(
-    curvePath.getSpacedPoints(10),
+    curvePath.getSpacedPoints(20),
   );
 
   const material = new LineBasicMaterial({
