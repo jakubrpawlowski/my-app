@@ -3,7 +3,11 @@ import { ScrollView } from "components/ScrollView";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { CSSProperties, useEffect, useState } from "react";
-import { setScrollTopSelector } from "stores/apple-container/selectors";
+import {
+  INITIAL_SCROLL_NORMALIZED,
+  SCROLL_LENGTH
+} from "resources/apple/constants";
+import { setScrollNormalizedSelector } from "stores/apple-container/selectors";
 import { useContainerStore } from "stores/apple-container/store";
 
 // https://github.com/microsoft/TypeScript/issues/30712#issuecomment-494865455
@@ -15,9 +19,10 @@ const Dynamic = dynamic(loader, {
 });
 
 export default function Apple() {
-  const setScrollTop = useContainerStore(setScrollTopSelector);
+  const setScrollNormalized = useContainerStore(setScrollNormalizedSelector);
   const [height, setHeight] = useState("100vh");
 
+  // Fill screen with sticky main
   useEffect(() => {
     const updateHeight = () => {
       setHeight(`${window.innerHeight}px`);
@@ -31,7 +36,10 @@ export default function Apple() {
   }, []);
 
   return (
-    <ScrollView setScrollTop={setScrollTop}>
+    <ScrollView
+      initialScrollNormalized={INITIAL_SCROLL_NORMALIZED}
+      setScrollNormalized={setScrollNormalized}
+    >
       <Head>
         <title>Apple</title>
         <link rel="icon" href="/favicon.ico" />
@@ -58,7 +66,7 @@ const styles: {
   main: CSSProperties;
 } = {
   content: {
-    height: "300vh",
+    height: `${100 + SCROLL_LENGTH}vh`,
   },
   main: {
     position: "sticky",

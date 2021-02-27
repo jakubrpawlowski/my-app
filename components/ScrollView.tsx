@@ -1,14 +1,17 @@
 import Head from "next/head";
 import { CSSProperties, PropsWithChildren, useEffect, useRef } from "react";
-import { INITIAL_SCROLL_TOP } from "resources/apple/constants";
 
 interface ScrollViewProps {
-  setScrollTop: (value: number) => void;
+  initialScrollNormalized: number;
+  setScrollNormalized: (value: number) => void;
 }
 
+// This component only SETS scrollNormalized
+// It keeps the value it last set in a ref to avoid infinite loop when resizing
 export const ScrollView = (props: PropsWithChildren<ScrollViewProps>) => {
   const scrollableRef = useRef<HTMLDivElement>(null);
-  const { setScrollTop } = props;
+  const { initialScrollNormalized, setScrollNormalized } = props;
+  const scrollNormalizedRef = useRef<number>(initialScrollNormalized);
 
   useEffect(() => {
     // https://stackoverflow.com/questions/49675898/programmatically-scroll-with-non-integral-scale-values
@@ -29,24 +32,42 @@ export const ScrollView = (props: PropsWithChildren<ScrollViewProps>) => {
           scrollableRef.current.scrollTop = scrollMax - 5;
         }
 
-        setScrollTop(scrollableRef.current.scrollTop);
+        scrollNormalizedRef.current =
+          scrollableRef.current.scrollTop / scrollMax;
+        setScrollNormalized(scrollNormalizedRef.current);
+      }
+    };
+
+    const handleResize = () => {
+      if (scrollableRef.current) {
+        const clientHeight = scrollableRef.current.clientHeight;
+        const scrollHeight = scrollableRef.current.scrollHeight;
+        const scrollMax = scrollHeight - clientHeight;
+        scrollableRef.current.scrollTop =
+          scrollNormalizedRef.current * scrollMax;
       }
     };
 
     if (scrollableRef.current) {
-      scrollableRef.current.scrollTop = INITIAL_SCROLL_TOP;
+      const clientHeight = scrollableRef.current.clientHeight;
+      const scrollHeight = scrollableRef.current.scrollHeight;
+      const scrollMax = scrollHeight - clientHeight;
+      scrollableRef.current.scrollTop = initialScrollNormalized * scrollMax;
 
       scrollableRef.current.addEventListener("scroll", handleScroll, {
         passive: true,
       });
     }
+    window.addEventListener("resize", handleResize);
 
     return () => {
       if (scrollableRef.current) {
         scrollableRef.current.removeEventListener("scroll", handleScroll);
       }
+
+      window.removeEventListener("resize", handleResize);
     };
-  }, [setScrollTop]);
+  }, [setScrollNormalized]);
 
   return (
     <div ref={scrollableRef} style={styles.scrollable}>

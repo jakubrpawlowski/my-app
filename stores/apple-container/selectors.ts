@@ -1,5 +1,6 @@
 import { ContainerState } from "./store";
 
-export const scrollTopSelector = (state: ContainerState) => state.scrollTop;
-export const setScrollTopSelector = (state: ContainerState) =>
-  state.setScrollTop;
+export const scrollNormalizedSelector = (state: ContainerState) =>
+  state.scrollNormalized;
+export const setScrollNormalizedSelector = (state: ContainerState) =>
+  state.setScrollNormalized;

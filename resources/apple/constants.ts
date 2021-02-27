@@ -1,1 +1,2 @@
-export const INITIAL_SCROLL_TOP = 20;
+export const INITIAL_SCROLL_NORMALIZED = 0.2;
+export const SCROLL_LENGTH = 200;

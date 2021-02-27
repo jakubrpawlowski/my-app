@@ -1,12 +1,15 @@
 import { memo, useEffect, useRef } from "react";
 import { useThree } from "react-three-fiber";
-import { scrollTopSelector } from "stores/apple-container/selectors";
+import { scrollNormalizedSelector } from "stores/apple-container/selectors";
 import { useContainerStore } from "stores/apple-container/store";
 import { PerspectiveCamera } from "three";
 
+// This component only CONSUMES scrollNormalized
 export const Camera = memo(() => {
   const cameraRef = useRef<PerspectiveCamera>(null);
-  const scrollTopRef = useRef(useContainerStore.getState().scrollTop);
+  const scrollNormalizedRef = useRef(
+    useContainerStore.getState().scrollNormalized,
+  );
   const { setDefaultCamera } = useThree();
 
   // Make the camera known to the system
@@ -18,10 +21,10 @@ export const Camera = memo(() => {
 
   useEffect(
     () =>
-      useContainerStore.subscribe(
-        (scrollTop) => (scrollTopRef.current = scrollTop),
-        scrollTopSelector,
-      ),
+      useContainerStore.subscribe((scrollTop) => {
+        scrollNormalizedRef.current = scrollTop;
+        console.log(`scrollNormalizedRef.current`, scrollNormalizedRef.current); // TODO remove this
+      }, scrollNormalizedSelector),
     [],
   );
 
