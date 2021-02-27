@@ -2,7 +2,7 @@ import { Loading } from "components/Loading";
 import { ScrollView } from "components/ScrollView";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import { CSSProperties } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { setScrollTopSelector } from "stores/apple-container/selectors";
 import { useContainerStore } from "stores/apple-container/store";
 
@@ -16,6 +16,11 @@ const Dynamic = dynamic(loader, {
 
 export default function Apple() {
   const setScrollTop = useContainerStore(setScrollTopSelector);
+  const [height, setHeight] = useState("100vh");
+
+  useEffect(() => {
+    setHeight(`${window.visualViewport.height}px`);
+  }, []);
 
   return (
     <ScrollView setScrollTop={setScrollTop}>
@@ -26,12 +31,15 @@ export default function Apple() {
 
       <div style={styles.content}>
         <main style={styles.main}>
-          {/* TODO fix those styles later */}
-          <div style={{ height: 750 }}>
-            <h1>Apple</h1>
-            <Dynamic />
-          </div>
+          <Dynamic />
         </main>
+        <style jsx>
+          {`
+            main {
+              height: ${height};
+            }
+          `}
+        </style>
       </div>
     </ScrollView>
   );
@@ -47,5 +55,6 @@ const styles: {
   main: {
     position: "sticky",
     top: 0,
+    backgroundColor: "yellow",
   },
 };

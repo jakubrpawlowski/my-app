@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { CSSProperties, PropsWithChildren, useEffect, useRef } from "react";
+import { INITIAL_SCROLL_TOP } from "resources/apple/constants";
 
 interface ScrollViewProps {
   setScrollTop: (value: number) => void;
@@ -33,7 +34,7 @@ export const ScrollView = (props: PropsWithChildren<ScrollViewProps>) => {
     };
 
     if (scrollableRef.current) {
-      scrollableRef.current.scrollTop = 5;
+      scrollableRef.current.scrollTop = INITIAL_SCROLL_TOP;
 
       scrollableRef.current.addEventListener("scroll", handleScroll, {
         passive: true,

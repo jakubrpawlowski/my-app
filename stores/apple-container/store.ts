@@ -1,4 +1,5 @@
 import produce from "immer";
+import { INITIAL_SCROLL_TOP } from "resources/apple/constants";
 import create, { StateCreator } from "zustand";
 
 export type ContainerState = {
@@ -14,7 +15,7 @@ const immer = (
   config((fn) => set(produce(fn)), ...rest);
 
 const createState: StateCreator<ContainerState, CustomSetState> = (set) => ({
-  scrollTop: 5,
+  scrollTop: INITIAL_SCROLL_TOP,
   setScrollTop: (value) =>
     set((draftState) => {
       draftState.scrollTop = value;
