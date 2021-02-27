@@ -19,7 +19,15 @@ export default function Apple() {
   const [height, setHeight] = useState("100vh");
 
   useEffect(() => {
-    setHeight(`${window.visualViewport.height}px`);
+    const updateHeight = () => {
+      setHeight(`${window.innerHeight}px`);
+    };
+
+    updateHeight();
+
+    window.addEventListener("resize", updateHeight);
+
+    return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
   return (
@@ -55,6 +63,5 @@ const styles: {
   main: {
     position: "sticky",
     top: 0,
-    backgroundColor: "yellow",
   },
 };
