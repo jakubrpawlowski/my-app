@@ -4,7 +4,7 @@ import { curves } from "resources/apple/city_camera_curve_data";
 import { scrollNormalizedSelector } from "stores/apple-container/selectors";
 import { useContainerStore } from "stores/apple-container/store";
 import { CurvePath, PerspectiveCamera, Vector3 } from "three";
-import { makeCurvePath } from "utils/curve-utils";
+import { makeCurvePath, makeGetPoint } from "utils/curve-utils";
 
 // This component only CONSUMES scrollNormalized
 export const Camera = memo(() => {
@@ -28,17 +28,21 @@ export const Camera = memo(() => {
   const t2 = t1 > 1 ? 1 : t1;
 
   const pos = curvePathRef.current.getPoint(t0);
+  const getPoint = makeGetPoint(curvePathRef.current);
+  const posi = getPoint(t0);
 
   // Update the camera every frame
   useFrame(() => {
     if (cameraRef.current) {
       const pos2 = curvePathRef.current.getPoint(t2);
+      const posi2 = getPoint(t2);
 
       // TODO lookAt may be an overkill
-      cameraRef.current.lookAt(pos2);
+      // cameraRef.current.lookAt(pos2);
+      cameraRef.current.lookAt(posi2);
       cameraRef.current.updateMatrixWorld();
     }
   });
 
-  return <perspectiveCamera ref={cameraRef} position={pos} />;
+  return <perspectiveCamera ref={cameraRef} position={posi} />;
 });

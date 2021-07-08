@@ -38,3 +38,25 @@ export const makeCurvePath = (arr: Point[]) => {
 
   return curvePath;
 };
+
+const normalize = (val: number, min: number, max: number) =>
+  (val - min) / (max - min);
+
+// TODO - write tests for all those
+export const makeGetPoint = (curvePath: CurvePath<Vector3>) => (
+  scrollNormalized: number,
+) => {
+  const segmentsAmount = curvePath.curves.length;
+  const min = Math.floor(scrollNormalized * segmentsAmount);
+  const max = Math.ceil(scrollNormalized * segmentsAmount);
+  const segment =
+    scrollNormalized === 1
+      ? curvePath.curves[segmentsAmount - 1]
+      : curvePath.curves[min];
+  const subScrollNormalized = normalize(
+    scrollNormalized * segmentsAmount,
+    min,
+    max,
+  );
+  return segment.getPointAt(subScrollNormalized);
+};

@@ -6,6 +6,7 @@ import create, { StateCreator } from "zustand";
 
 type AppleMaterials = {
   fillMaterial: MeshBasicMaterial;
+  fillMaterialHover: MeshBasicMaterial;
   lineMaterial: LineBasicMaterial;
   conditionalMaterial: ShaderMaterial;
 };
@@ -28,6 +29,13 @@ const createState: StateCreator<AppleState, CustomSetState> = (set) => ({
       polygonOffsetFactor: 2,
       polygonOffsetUnits: 1,
       colorWrite: false,
+    }),
+    fillMaterialHover: new MeshBasicMaterial({
+      polygonOffset: true,
+      polygonOffsetFactor: 2,
+      polygonOffsetUnits: 1,
+      colorWrite: true,
+      color: '#0a66c2',
     }),
     lineMaterial: new LineBasicMaterial({
       color: greyscalePalette.d[3],
